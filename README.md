@@ -2,7 +2,7 @@
 
 Personal site of Anikesh Banik — projects, blog, and resume.
 
-**Live:** https://anikesh-banik.vercel.app
+**Live:** https://anikeshb.vercel.app
 
 ## Stack
 

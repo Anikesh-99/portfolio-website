@@ -9,7 +9,7 @@ export const site = {
   email: "b.anikesh@gmail.com",
   github: "https://github.com/Anikesh-99",
   linkedin: "https://www.linkedin.com/in/anikesh-bhuvaneshwaram/",
-  url: "https://anikesh-banik.vercel.app",
+  url: "https://anikeshb.vercel.app",
 };
 
 export const navLinks = [
