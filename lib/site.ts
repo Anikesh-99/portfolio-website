@@ -7,8 +7,8 @@ export const site = {
     "I build software that ships — from data pipelines to the interfaces on top of them.",
   email: "b.anikesh@gmail.com",
   github: "https://github.com/Anikesh-99",
-  linkedin: "https://www.linkedin.com/in/anikesh-banik", // TODO: real profile
-  url: "https://portfolio-website-dun-gamma-84.vercel.app",
+  linkedin: "https://www.linkedin.com/in/anikesh-bhuvaneshwaram/",
+  url: "https://anikesh-banik.vercel.app",
 };
 
 export const navLinks = [

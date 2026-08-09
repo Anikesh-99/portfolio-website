@@ -2,7 +2,7 @@
 
 Personal site of Anikesh Banik — projects, blog, and resume.
 
-**Live:** https://portfolio-website-dun-gamma-84.vercel.app
+**Live:** https://anikesh-banik.vercel.app
 
 ## Stack
 
