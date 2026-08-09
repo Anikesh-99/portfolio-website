@@ -12,7 +12,7 @@ export function Nav() {
       <nav className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
         <Link
           href="/"
-          className="font-mono text-sm text-fg transition-colors hover:text-amber"
+          className="py-2 font-mono text-sm text-fg transition-colors hover:text-amber"
         >
           <span className="text-amber">~</span>/{site.firstName.toLowerCase()}
         </Link>
@@ -23,7 +23,7 @@ export function Nav() {
               <Link
                 key={href}
                 href={href}
-                className={`font-mono text-[13px] transition-colors ${
+                className={`py-2 font-mono text-[13px] transition-colors ${
                   active ? "text-amber" : "text-muted hover:text-fg"
                 }`}
               >

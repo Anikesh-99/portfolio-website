@@ -61,6 +61,27 @@ body {
   }
 }
 
+/* Scroll-triggered section reveal — a quieter echo of the hero's entrance.
+   The class pair is added by <ScrollReveal> only when JS runs, the section
+   is below the fold, and the visitor allows motion. */
+.scroll-reveal {
+  opacity: 0;
+}
+.scroll-reveal-in {
+  animation: fade-up-soft 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fade-up-soft {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes blink {
   50% {
     opacity: 0;

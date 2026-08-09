@@ -8,11 +8,12 @@ export function Footer() {
           © {new Date().getFullYear()} {site.name}
         </p>
         <div className="flex gap-5">
+          {/* -my-2/py-2 widen the tap target without moving the layout */}
           <a
             href={site.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-amber"
+            className="-my-2 py-2 transition-colors hover:text-amber"
           >
             github
           </a>
@@ -20,13 +21,13 @@ export function Footer() {
             href={site.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-amber"
+            className="-my-2 py-2 transition-colors hover:text-amber"
           >
             linkedin
           </a>
           <a
             href={`mailto:${site.email}`}
-            className="transition-colors hover:text-amber"
+            className="-my-2 py-2 transition-colors hover:text-amber"
           >
             email
           </a>

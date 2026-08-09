@@ -77,6 +77,30 @@ export function getProject(slug: string): Project | undefined {
   return getProjects().find((project) => project.slug === slug);
 }
 
+export type TravelPhoto = {
+  src: string;
+  caption: string;
+};
+
+// Drop images into public/travel/ to populate the home-page travel section.
+// Filename becomes the caption: "03-kyoto-japan.jpg" → "kyoto japan"
+// (a leading number prefix controls order and is stripped from the caption).
+export function getTravelPhotos(): TravelPhoto[] {
+  const dir = path.join(process.cwd(), "public", "travel");
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((file) => /\.(jpe?g|png|webp|avif)$/i.test(file))
+    .sort()
+    .map((file) => ({
+      src: `/travel/${file}`,
+      caption: file
+        .replace(/\.[^.]+$/, "")
+        .replace(/^\d+[-_]/, "")
+        .replace(/[-_]+/g, " "),
+    }));
+}
+
 export function formatDate(date: string): string {
   return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
