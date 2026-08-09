@@ -1,0 +1,31 @@
+---
+title: "WorldQuant alpha research"
+summary: "A disciplined post-mortem of ~400 alpha simulations: a robustness-gated selection funnel (259 tested, 30 survivors), not cherry-picked Sharpe."
+tech: ["Python", "WorldQuant BRAIN"]
+year: 2026
+featured: false
+order: 5
+repo: "https://github.com/Anikesh-99/wq_alpha_research"
+---
+
+The point of this repo is not "here are some high-Sharpe formulas." It's the
+selection methodology: how I searched a large space of signals on WorldQuant's
+BRAIN platform, how I avoided fooling myself, and what actually survived a
+robustness gate.
+
+## The multiple-comparisons problem
+
+Test hundreds of signals and some will look great by pure chance. Ranking by
+in-sample Sharpe and presenting the top one would be exactly the wrong thing
+to do, so selection ran through a gate instead of a max: a signal only counts
+if it passed all of WorldQuant's platform checks and kept a Sharpe of at
+least 1.0 on a different sub-universe of names than the one it was scored on.
+
+![selection funnel](/projects/wq-funnel.svg)
+
+## Reporting the whole distribution
+
+Median in-sample Sharpe across all 259 alphas was 0.64 (max 2.10, min -1.66).
+Most ideas were mediocre or worse, and saying so is the honest summary. I also
+weighted convergence over outliers: a family of related signals that all
+survive is worth more than one lucky formula.

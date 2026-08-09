@@ -1,0 +1,23 @@
+---
+title: "quant_os"
+summary: "A full-stack workspace for quant research: read papers and market news, sketch strategies, and backtest them in one place."
+tech: ["TypeScript", "React", "Python", "Docker"]
+year: 2026
+featured: false
+order: 6
+repo: "https://github.com/Anikesh-99/quant_os"
+---
+
+Quant research scatters across tools: papers in one tab, news in another,
+backtests in notebooks. quant_os is my attempt at putting the loop in one
+place: read, form a hypothesis, test it.
+
+## Architecture
+
+A React/TypeScript frontend talks to a Python backend; Docker Compose brings
+the whole stack up with one command. The backend owns data access and the
+backtest runner, the frontend owns reading and annotation workflows.
+
+This one is a workbench rather than a polished product: it exists to make my
+own research loop faster, and it earns its keep every time a paper idea goes
+from PDF to backtest without leaving the app.

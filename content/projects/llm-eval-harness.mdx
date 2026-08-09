@@ -1,0 +1,30 @@
+---
+title: "LLM eval harness"
+summary: "A small framework for evaluating LLM outputs: rule-based graders plus LLM-as-judge, pluggable model adapters, runs offline with no API key."
+tech: ["Python", "Claude API", "LLM-as-judge"]
+year: 2026
+featured: true
+order: 3
+repo: "https://github.com/Anikesh-99/llm_eval_harness"
+---
+
+Every LLM project needs evals, and most end up with a pile of one-off scripts.
+This is the small framework I reuse instead: it grades a model's answers over
+a dataset and reports pass rates broken down by category and grader.
+
+## Two kinds of graders
+
+Deterministic rule-based graders (exact match, numeric tolerance, regex,
+JSON-schema, substring) handle everything with a checkable answer. An
+LLM-as-judge handles open-ended answers where "correct" is a judgment call.
+Keeping both behind one grader interface means a dataset can mix question
+types freely.
+
+![two kinds of graders](/projects/eval-harness-arch.svg)
+
+## Offline by default
+
+The whole thing runs with a stub model and a deterministic mock judge, so the
+demo and the tests pass without any API key. Swap in the Anthropic adapters to
+evaluate a real model judged by a real model. Designing for offline first made
+the framework honest: nothing in the core depends on a provider.

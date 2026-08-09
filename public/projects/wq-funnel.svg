@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 330" font-family="ui-monospace, Menlo, monospace">
+  <rect width="800" height="330" fill="#0b0e14"/>
+  <text x="40" y="48" fill="#e8e4da" font-size="16" font-weight="600">robustness-gated selection funnel</text>
+  <text x="40" y="72" fill="#8f95a0" font-size="12">US equities, TOP3000 universe, 2019–2023, sub-industry neutralized</text>
+
+  <!-- baseline -->
+  <line x1="240" y1="100" x2="240" y2="270" stroke="#2a2f3a" stroke-width="1"/>
+
+  <!-- 259 tested -->
+  <text x="228" y="132" fill="#8f95a0" font-size="13" text-anchor="end">unique alphas tested</text>
+  <rect x="240" y="116" width="470" height="24" rx="3" fill="#8f95a0"/>
+  <text x="700" y="132" fill="#0b0e14" font-size="13" text-anchor="end" font-weight="600">259</text>
+
+  <!-- 32 passed platform checks -->
+  <text x="228" y="192" fill="#8f95a0" font-size="13" text-anchor="end">passed every platform check</text>
+  <rect x="240" y="176" width="58" height="24" rx="3" fill="#8f95a0"/>
+  <text x="306" y="192" fill="#8f95a0" font-size="13">32</text>
+
+  <!-- 30 survivors -->
+  <text x="228" y="252" fill="#e8e4da" font-size="13" text-anchor="end">held Sharpe ≥ 1.0 off-universe</text>
+  <rect x="240" y="236" width="54" height="24" rx="3" fill="#ffb454"/>
+  <text x="302" y="252" fill="#e8e4da" font-size="13">30  ← the survivors</text>
+
+  <text x="40" y="308" fill="#8f95a0" font-size="12">median in-sample Sharpe of all 259 was 0.64 · the funnel, not the winner, is the honest summary</text>
+</svg>

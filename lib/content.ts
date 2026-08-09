@@ -20,6 +20,7 @@ export type Project = {
   tech: string[];
   year: number;
   featured: boolean;
+  order: number;
   repo?: string;
   demo?: string;
   body: string;
@@ -64,11 +65,12 @@ export function getProjects(): Project[] {
       tech: (data.tech ?? []) as string[],
       year: data.year as number,
       featured: (data.featured ?? false) as boolean,
+      order: (data.order ?? 99) as number,
       repo: data.repo as string | undefined,
       demo: data.demo as string | undefined,
       body,
     }))
-    .sort((a, b) => b.year - a.year);
+    .sort((a, b) => a.order - b.order || b.year - a.year);
 }
 
 export function getProject(slug: string): Project | undefined {

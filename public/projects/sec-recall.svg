@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 330" font-family="ui-monospace, Menlo, monospace">
+  <rect width="800" height="330" fill="#0b0e14"/>
+  <text x="40" y="48" fill="#e8e4da" font-size="16" font-weight="600">recall@5 by retrieval mode</text>
+  <text x="40" y="72" fill="#8f95a0" font-size="12">36 labeled questions · two 10-Ks each for NVDA, AAPL, MSFT (~1,220 chunks)</text>
+
+  <!-- gridline at 100% -->
+  <line x1="710" y1="100" x2="710" y2="270" stroke="#2a2f3a" stroke-width="1" stroke-dasharray="3 4"/>
+  <text x="710" y="92" fill="#8f95a0" font-size="11" text-anchor="middle">100%</text>
+
+  <!-- baseline -->
+  <line x1="240" y1="100" x2="240" y2="270" stroke="#2a2f3a" stroke-width="1"/>
+
+  <!-- MMR (default) 88.9% -->
+  <text x="228" y="132" fill="#e8e4da" font-size="13" text-anchor="end">MMR (default)</text>
+  <rect x="240" y="116" width="418" height="24" rx="3" fill="#ffb454"/>
+  <text x="666" y="132" fill="#e8e4da" font-size="13">88.9%  (32/36)</text>
+
+  <!-- Chain CE→MMR 86.1% -->
+  <text x="228" y="192" fill="#8f95a0" font-size="13" text-anchor="end">chain (CE→MMR)</text>
+  <rect x="240" y="176" width="405" height="24" rx="3" fill="#8f95a0"/>
+  <text x="653" y="192" fill="#8f95a0" font-size="13">86.1%  (31/36)</text>
+
+  <!-- Cross-encoder 83.3% -->
+  <text x="228" y="252" fill="#8f95a0" font-size="13" text-anchor="end">cross-encoder</text>
+  <rect x="240" y="236" width="392" height="24" rx="3" fill="#8f95a0"/>
+  <text x="640" y="252" fill="#8f95a0" font-size="13">83.3%  (30/36)</text>
+
+  <text x="40" y="308" fill="#8f95a0" font-size="12">six rounds of measure-then-fix took the first run from 33% to 88.9%</text>
+</svg>

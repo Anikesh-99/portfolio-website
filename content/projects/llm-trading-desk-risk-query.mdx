@@ -1,0 +1,30 @@
+---
+title: "LLM trading desk risk query"
+summary: "A natural-language interface over live portfolio risk: Greeks, VaR, and DV01 across multi-instrument positions, answered by a tool-calling agent."
+tech: ["Python", "Claude API", "Pandas", "Streamlit"]
+year: 2026
+featured: true
+order: 2
+repo: "https://github.com/Anikesh-99/LLM_Trading_Desk_Risk_Query"
+---
+
+Risk questions on a trading desk are simple to ask and annoying to answer:
+"what's my total DV01 across rates books?" means someone opens a risk report,
+filters, and aggregates. This project puts a tool-calling agent in front of the
+risk data so the question itself is the interface.
+
+## How it works
+
+The agent doesn't guess numbers. It picks from a set of typed tools
+(portfolio Greeks, VaR, DV01 by book), calls them against live position data,
+and composes the answer from what the tools return. The numbers in the answer
+are always the numbers in the book.
+
+![tool-calling architecture](/projects/risk-query-arch.svg)
+
+## Why an eval harness
+
+An answer that sounds right and an answer that is right are different things
+in risk. The harness scores agent answers against hand-computed risk numbers
+for known portfolios, so tool-selection or aggregation regressions show up as
+failing cases instead of wrong numbers reaching a user.

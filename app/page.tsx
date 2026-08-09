@@ -16,7 +16,7 @@ export default function Home() {
           className="reveal font-mono text-sm text-amber"
           style={{ ["--reveal-order" as string]: 0 }}
         >
-          {site.role.toLowerCase()} · open to interesting problems
+          {site.status}
         </p>
         <h1
           className="display reveal mt-5 text-5xl font-bold sm:text-7xl"

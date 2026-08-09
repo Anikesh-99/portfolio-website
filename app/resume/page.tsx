@@ -25,7 +25,7 @@ export default function ResumePage() {
         <div className="mt-4 space-y-8">
           {experience.map((job) => (
             <div
-              key={`${job.company}-${job.period}`}
+              key={`${job.company}-${job.period}-${job.role}`}
               className="grid gap-2 border-b border-line pb-8 sm:grid-cols-[10rem_1fr] sm:gap-6"
             >
               <div className="font-mono text-[13px] text-muted">
@@ -52,7 +52,7 @@ export default function ResumePage() {
 
       <section className="mt-12">
         <h2 className="font-mono text-sm text-amber">education</h2>
-        <div className="mt-4">
+        <div className="mt-4 space-y-6">
           {education.map((entry) => (
             <div
               key={entry.school}
@@ -64,6 +64,11 @@ export default function ResumePage() {
               <div>
                 <h3 className="font-medium">{entry.school}</h3>
                 <p className="mt-1 text-sm text-muted">{entry.degree}</p>
+                {entry.points?.map((point) => (
+                  <p key={point} className="mt-1 text-sm text-muted">
+                    {point}
+                  </p>
+                ))}
               </div>
             </div>
           ))}
@@ -72,23 +77,24 @@ export default function ResumePage() {
 
       <section className="mt-12">
         <h2 className="font-mono text-sm text-amber">skills</h2>
-        <div className="mt-4 grid gap-2 sm:grid-cols-[10rem_1fr] sm:gap-6">
-          <div className="font-mono text-[13px] text-muted">languages</div>
-          <div className="flex flex-wrap gap-2 font-mono text-xs">
-            {skills.languages.map((s) => (
-              <span key={s} className="rounded border border-line px-2 py-1 text-muted">
-                {s}
-              </span>
-            ))}
-          </div>
-          <div className="font-mono text-[13px] text-muted">tools</div>
-          <div className="flex flex-wrap gap-2 font-mono text-xs">
-            {skills.tools.map((s) => (
-              <span key={s} className="rounded border border-line px-2 py-1 text-muted">
-                {s}
-              </span>
-            ))}
-          </div>
+        <div className="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-[10rem_1fr]">
+          {skills.map((row) => (
+            <div key={row.label} className="contents">
+              <div className="font-mono text-[13px] text-muted">
+                {row.label}
+              </div>
+              <div className="flex flex-wrap gap-2 font-mono text-xs">
+                {row.items.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded border border-line px-2 py-1 text-muted"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>

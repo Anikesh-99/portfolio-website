@@ -1,10 +1,11 @@
 // Central place for personal facts — edit here, everything updates.
 export const site = {
-  name: "Anikesh Banik",
+  name: "Anikesh Bhuvaneshwaram",
   firstName: "Anikesh",
-  role: "Software Engineer",
+  role: "Quant Researcher & Software Engineer",
+  status: "quant research intern @ Qsentia · MFE @ UCLA Anderson · ex-Visa",
   tagline:
-    "I build software that ships — from data pipelines to the interfaces on top of them.",
+    "I spent two years building production ML systems at Visa. Now I do quant research: agentic trading strategies, risk tooling, and backtests you can trust.",
   email: "b.anikesh@gmail.com",
   github: "https://github.com/Anikesh-99",
   linkedin: "https://www.linkedin.com/in/anikesh-bhuvaneshwaram/",

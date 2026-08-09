@@ -1,0 +1,33 @@
+---
+title: "Event-driven backtester"
+summary: "A backtesting engine built to be honest about the things that make most backtests lie: look-ahead bias and trading costs. Pure standard library."
+tech: ["Python", "stdlib only"]
+year: 2026
+featured: false
+order: 4
+repo: "https://github.com/Anikesh-99/event_backtester"
+---
+
+Most home-grown backtests flatter themselves. The two usual culprits are
+look-ahead bias and ignored costs, so this engine makes both structural
+rather than a matter of discipline.
+
+## Event-driven, so the future doesn't exist
+
+Everything flows through four events. A strategy reads only bars up to the
+current one because future bars literally aren't reachable, and a signal
+generated on bar *t*'s close fills at bar *t+1*'s open, never the close that
+triggered it.
+
+![event flow](/projects/event-flow.svg)
+
+There's a unit test that pins the no-look-ahead rule down: it asserts the fill
+price equals the next bar's open, so a regression that reintroduces
+look-ahead fails the suite.
+
+## Costs and honest parameters
+
+Every fill pays commission and crosses the spread through a slippage model
+(buys fill slightly above the open, sells slightly below). Parameter selection
+is walk-forward: moving-average windows are chosen on a train slice and scored
+once on a held-out slice, next to a buy-and-hold benchmark.

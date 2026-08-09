@@ -5,7 +5,7 @@ import { ProjectRow } from "@/components/project-row";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "Things I've built — pipelines, tools, and experiments.",
+  description: "Things I've built: agents, evals, backtests, and research tools.",
 };
 
 export default function ProjectsPage() {
