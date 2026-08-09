@@ -8,7 +8,7 @@ export const site = {
   email: "b.anikesh@gmail.com",
   github: "https://github.com/Anikesh-99",
   linkedin: "https://www.linkedin.com/in/anikesh-banik", // TODO: real profile
-  url: "https://portfolio-website.vercel.app", // updated after first deploy
+  url: "https://portfolio-website-dun-gamma-84.vercel.app",
 };
 
 export const navLinks = [
