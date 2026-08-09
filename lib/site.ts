@@ -6,7 +6,7 @@ export const site = {
   tagline:
     "I build software that ships — from data pipelines to the interfaces on top of them.",
   email: "b.anikesh@gmail.com",
-  github: "https://github.com/anikesh-banik", // TODO: real username
+  github: "https://github.com/Anikesh-99",
   linkedin: "https://www.linkedin.com/in/anikesh-banik", // TODO: real profile
   url: "https://portfolio-website.vercel.app", // updated after first deploy
 };
