@@ -5,7 +5,7 @@ export const site = {
   role: "Quant Researcher & Software Engineer",
   status: "quant research intern @ Qsentia · MFE @ UCLA Anderson · ex-Visa",
   tagline:
-    "I spent two years building production ML systems at Visa. Now I do quant research: agentic trading strategies, risk tooling, and backtests you can trust.",
+    "I build ML systems and LLM agents for financial markets: production pipelines at Visa scale, agentic trading research at Qsentia, and evals before UIs.",
   email: "b.anikesh@gmail.com",
   github: "https://github.com/Anikesh-99",
   linkedin: "https://www.linkedin.com/in/anikesh-bhuvaneshwaram/",
