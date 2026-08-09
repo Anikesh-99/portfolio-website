@@ -1,0 +1,36 @@
+---
+title: "envcheck"
+summary: "A CLI that validates development environments against a declarative spec — no more 'works on my machine'."
+tech: ["Go", "CLI"]
+year: 2025
+featured: true
+repo: "https://github.com/username/envcheck"
+---
+
+*Placeholder project — replace with a real one.*
+
+## The problem
+
+Onboarding a new engineer took a full day of "install this, now this version
+of that" — and drift between machines caused unreproducible bugs weekly.
+
+## What I built
+
+A single binary that reads a `check.yaml` in the repo root and verifies the
+machine against it: language versions, required tools, environment variables,
+running services.
+
+```yaml
+requires:
+  go: ">=1.22"
+  docker: running
+  env:
+    - DATABASE_URL
+```
+
+Failures print the exact fix command, not just the error.
+
+## Results
+
+- Onboarding environment setup went from a day to under an hour
+- "Works on my machine" bug reports effectively disappeared
