@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
-// Fades a section up once as it first scrolls into view, reusing the hero's
-// easing. Sections already on screen at load, no-JS visitors, and
-// reduced-motion users all see content immediately.
+// Replays the hero's staggered entrance on a section as it scrolls into
+// view. Only `.sr` children below the fold at mount are hidden, so content
+// visible at load never flashes; the cascade fires when the first hidden
+// child approaches the viewport. No-JS visitors and reduced-motion users
+// see everything immediately.
 export function ScrollReveal({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -12,9 +14,13 @@ export function ScrollReveal({ children }: { children: ReactNode }) {
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (el.getBoundingClientRect().top <= window.innerHeight) return;
 
-    el.classList.add("scroll-reveal");
+    const hidden = [...el.querySelectorAll<HTMLElement>(".sr")].filter(
+      (item) => item.getBoundingClientRect().top > window.innerHeight,
+    );
+    if (hidden.length === 0) return;
+
+    hidden.forEach((item) => item.classList.add("sr-hide"));
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -24,7 +30,7 @@ export function ScrollReveal({ children }: { children: ReactNode }) {
       },
       { rootMargin: "0px 0px -10% 0px" },
     );
-    observer.observe(el);
+    observer.observe(hidden[0]);
     return () => observer.disconnect();
   }, []);
 

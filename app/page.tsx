@@ -8,6 +8,8 @@ import { ProjectRow } from "@/components/project-row";
 import { PostRow } from "@/components/post-row";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
+const order = (n: number) => ({ ["--reveal-order" as string]: n });
+
 export default function Home() {
   const featured = getProjects().filter((p) => p.featured);
   const posts = getPosts().slice(0, 3);
@@ -20,7 +22,7 @@ export default function Home() {
             nameplate filling the container without overflow at any viewport */}
         <h1
           className="display reveal text-[clamp(1.5rem,calc((100vw-3rem)/11.25),5.4rem)] leading-[0.95] font-bold"
-          style={{ ["--reveal-order" as string]: 0 }}
+          style={order(0)}
         >
           {site.firstName}{" "}
           <br />
@@ -30,14 +32,11 @@ export default function Home() {
         </h1>
         <p
           className="reveal mt-8 max-w-xl text-lg leading-relaxed text-muted"
-          style={{ ["--reveal-order" as string]: 1 }}
+          style={order(1)}
         >
           {site.tagline}
         </p>
-        <div
-          className="reveal mt-12 flex items-center gap-4"
-          style={{ ["--reveal-order" as string]: 2 }}
-        >
+        <div className="reveal mt-12 flex items-center gap-4" style={order(2)}>
           <p className="font-mono text-sm text-amber">{site.status}</p>
           <div className="hidden h-px flex-1 bg-line sm:block" />
         </div>
@@ -45,15 +44,20 @@ export default function Home() {
 
       <ScrollReveal>
         <section className="pb-20">
-          <SectionLabel route="/projects" heading />
+          <div className="sr" style={order(0)}>
+            <SectionLabel route="/projects" heading />
+          </div>
           <div className="mt-2">
-            {featured.map((project) => (
-              <ProjectRow key={project.slug} project={project} />
+            {featured.map((project, i) => (
+              <div key={project.slug} className="sr" style={order(i + 1)}>
+                <ProjectRow project={project} />
+              </div>
             ))}
           </div>
           <Link
             href="/projects"
-            className="-mb-2 mt-3 inline-block py-2 font-mono text-[13px] text-muted transition-colors hover:text-amber"
+            className="sr -mb-2 mt-3 inline-block py-2 font-mono text-[13px] text-muted transition-colors hover:text-amber"
+            style={order(featured.length + 1)}
           >
             all projects →
           </Link>
@@ -62,15 +66,20 @@ export default function Home() {
 
       <ScrollReveal>
         <section className="pb-20">
-          <SectionLabel route="/blog" heading />
+          <div className="sr" style={order(0)}>
+            <SectionLabel route="/blog" heading />
+          </div>
           <div className="mt-2">
-            {posts.map((post) => (
-              <PostRow key={post.slug} post={post} />
+            {posts.map((post, i) => (
+              <div key={post.slug} className="sr" style={order(i + 1)}>
+                <PostRow post={post} />
+              </div>
             ))}
           </div>
           <Link
             href="/blog"
-            className="-mb-2 mt-3 inline-block py-2 font-mono text-[13px] text-muted transition-colors hover:text-amber"
+            className="sr -mb-2 mt-3 inline-block py-2 font-mono text-[13px] text-muted transition-colors hover:text-amber"
+            style={order(posts.length + 1)}
           >
             all posts →
           </Link>
@@ -79,12 +88,15 @@ export default function Home() {
 
       <ScrollReveal>
         <section className="pb-20">
-          <SectionLabel route="/resume" heading />
+          <div className="sr" style={order(0)}>
+            <SectionLabel route="/resume" heading />
+          </div>
           <div className="mt-2">
-            {experience.slice(0, 3).map((job) => (
+            {experience.slice(0, 3).map((job, i) => (
               <div
                 key={`${job.company}-${job.role}`}
-                className="flex flex-col gap-1 border-b border-line py-5 sm:flex-row sm:items-baseline sm:gap-6"
+                className="sr flex flex-col gap-1 border-b border-line py-5 sm:flex-row sm:items-baseline sm:gap-6"
+                style={order(i + 1)}
               >
                 <span className="shrink-0 font-mono text-[13px] text-muted sm:w-40">
                   {job.period}
@@ -100,7 +112,8 @@ export default function Home() {
           </div>
           <Link
             href="/resume"
-            className="-mb-2 mt-3 inline-block py-2 font-mono text-[13px] text-muted transition-colors hover:text-amber"
+            className="sr -mb-2 mt-3 inline-block py-2 font-mono text-[13px] text-muted transition-colors hover:text-amber"
+            style={order(4)}
           >
             full resume →
           </Link>
@@ -110,10 +123,12 @@ export default function Home() {
       {travel.length > 0 && (
         <ScrollReveal>
           <section className="pb-24">
-            <SectionLabel route="# travel" link={false} heading />
+            <div className="sr" style={order(0)}>
+              <SectionLabel route="# travel" link={false} heading />
+            </div>
             <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5">
-              {travel.map((photo) => (
-                <figure key={photo.src}>
+              {travel.map((photo, i) => (
+                <figure key={photo.src} className="sr" style={order(i + 1)}>
                   <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-line">
                     <Image
                       src={photo.src}
