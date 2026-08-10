@@ -15,8 +15,8 @@ place: read, form a hypothesis, test it.
 ## Architecture
 
 A React/TypeScript frontend talks to a Python backend; Docker Compose brings
-the whole stack up with one command. The backend owns data access and the
-backtest runner, the frontend owns reading and annotation workflows.
+up the databases (Postgres with pgvector, Redis). The backend owns data access
+and the backtest runner, the frontend owns reading and annotation workflows.
 
 This one is a workbench rather than a polished product: it exists to make my
 own research loop faster, and it earns its keep every time a paper idea goes

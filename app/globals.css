@@ -90,6 +90,29 @@ body {
   }
 }
 
+/* Print: flip the theme tokens to paper so any page prints clean.
+   Used to generate the downloadable resume PDF (scripts/resume-pdf.sh). */
+@media print {
+  :root {
+    --color-ink: #ffffff;
+    --color-raised: #f4f4f2;
+    --color-fg: #16181d;
+    --color-muted: #4a4f58;
+    --color-amber: #8a5a12;
+    --color-amber-dim: #8a5a12;
+    --color-line: rgba(0, 0, 0, 0.2);
+  }
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+}
+
+@page {
+  margin: 14mm 12mm;
+}
+
 /* Prose styling for rendered MDX */
 .prose {
   line-height: 1.75;

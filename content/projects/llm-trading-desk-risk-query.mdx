@@ -25,6 +25,6 @@ are always the numbers in the book.
 ## Why an eval harness
 
 An answer that sounds right and an answer that is right are different things
-in risk. The harness scores agent answers against hand-computed risk numbers
-for known portfolios, so tool-selection or aggregation regressions show up as
+in risk. The harness runs 50 labeled desk queries and scores routing accuracy,
+answer rate, and latency, so tool-selection and routing regressions show up as
 failing cases instead of wrong numbers reaching a user.

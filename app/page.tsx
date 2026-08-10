@@ -36,9 +36,12 @@ export default function Home() {
         >
           {site.tagline}
         </p>
-        <div className="reveal mt-12 flex items-center gap-4" style={order(2)}>
-          <p className="font-mono text-sm text-amber">{site.status}</p>
-          <div className="hidden h-px flex-1 bg-line sm:block" />
+        <div className="reveal mt-12" style={order(2)}>
+          <div className="flex items-center gap-4">
+            <p className="font-mono text-sm text-amber">{site.status}</p>
+            <div className="hidden h-px flex-1 bg-line sm:block" />
+          </div>
+          <p className="mt-3 font-mono text-sm text-muted">{site.seeking}</p>
         </div>
       </section>
 

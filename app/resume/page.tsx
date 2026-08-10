@@ -19,6 +19,14 @@ export default function ResumePage() {
           {site.email}
         </a>
       </p>
+      <p className="mt-1 text-muted">{site.seeking}</p>
+      <a
+        href="/anikesh-bhuvaneshwaram-resume.pdf"
+        download
+        className="no-print -mb-2 mt-4 inline-block py-2 font-mono text-[13px] text-muted transition-colors hover:text-amber"
+      >
+        download pdf →
+      </a>
 
       <section className="mt-12">
         <h2 className="font-mono text-sm text-amber">experience</h2>
