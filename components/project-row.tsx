@@ -18,13 +18,20 @@ export function ProjectRow({ project }: { project: Project }) {
           {project.summary}
         </span>
       </span>
-      <span className="hidden gap-2 font-mono text-xs text-muted sm:flex">
-        {project.tech.slice(0, 3).map((t) => (
-          <span key={t} className="rounded border border-line px-1.5 py-0.5">
-            {t}
-          </span>
-        ))}
-      </span>
+      {/* Measured results outrank tech badges — a metric replaces them */}
+      {project.metric ? (
+        <span className="hidden shrink-0 font-mono text-[13px] text-amber sm:block">
+          {project.metric}
+        </span>
+      ) : (
+        <span className="hidden gap-2 font-mono text-xs text-muted sm:flex">
+          {project.tech.slice(0, 3).map((t) => (
+            <span key={t} className="rounded border border-line px-1.5 py-0.5">
+              {t}
+            </span>
+          ))}
+        </span>
+      )}
     </Link>
   );
 }

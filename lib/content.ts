@@ -21,6 +21,7 @@ export type Project = {
   year: number;
   featured: boolean;
   order: number;
+  metric?: string;
   repo?: string;
   demo?: string;
   body: string;
@@ -66,6 +67,7 @@ export function getProjects(): Project[] {
       year: data.year as number,
       featured: (data.featured ?? false) as boolean,
       order: (data.order ?? 99) as number,
+      metric: data.metric as string | undefined,
       repo: data.repo as string | undefined,
       demo: data.demo as string | undefined,
       body,

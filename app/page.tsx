@@ -3,6 +3,7 @@ import Image from "next/image";
 import { site } from "@/lib/site";
 import { getPosts, getProjects, getTravelPhotos } from "@/lib/content";
 import { experience } from "@/lib/resume";
+import { measured } from "@/lib/measured";
 import { SectionLabel } from "@/components/section-label";
 import { ProjectRow } from "@/components/project-row";
 import { PostRow } from "@/components/post-row";
@@ -44,6 +45,34 @@ export default function Home() {
           <p className="mt-3 font-mono text-sm text-muted">{site.seeking}</p>
         </div>
       </section>
+
+      <ScrollReveal>
+        <section className="pb-20">
+          <div className="sr" style={order(0)}>
+            <SectionLabel route="# measured" link={false} heading />
+          </div>
+          <div className="sr mt-6 rounded-lg border border-line bg-raised/60 px-5 py-2 font-mono text-sm sm:px-6" style={order(1)}>
+            {measured.map((m) => (
+              <Link
+                key={m.label}
+                href={m.href}
+                className="group flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:gap-6"
+              >
+                <span className="flex gap-4 sm:w-52 sm:shrink-0">
+                  <span className="text-amber">ok</span>
+                  <span className="text-fg transition-colors group-hover:text-amber">
+                    {m.label}
+                  </span>
+                </span>
+                <span className="pl-9 text-amber sm:pl-0">{m.value}</span>
+                <span className="pl-9 text-[13px] text-muted sm:ml-auto sm:pl-0 sm:text-right">
+                  {m.note}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </ScrollReveal>
 
       <ScrollReveal>
         <section className="pb-20">
