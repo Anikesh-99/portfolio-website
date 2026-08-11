@@ -42,6 +42,7 @@ function readCollection(collection: "blog" | "projects") {
 
 export function getPosts(): Post[] {
   return readCollection("blog")
+    .filter(({ data }) => !data.draft)
     .map(({ slug, data, body }) => ({
       slug,
       title: data.title as string,
