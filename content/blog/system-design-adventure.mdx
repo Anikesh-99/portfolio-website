@@ -1,0 +1,150 @@
+---
+title: "System design adventures - Part 1"
+date: "2026-08-11"
+summary: "My journey over-engineering my quant research assistant"
+tags: ["system design", "software engineering"]
+draft: false
+---
+
+After around a year of hiatus from building web applications, I decided last
+month to get back into the groove. What I noticed starting out was how quickly
+the initial setup went — which took me back to my time at Visa, where every
+change touched databases, caches, load balancers, and a handful of other
+connections. As a junior back then I asked a lot of questions and played around
+with the code, but building an application from scratch gives far more room to
+experiment and to actually feel the tradeoffs between design choices.
+
+For context, the project is a research platform: type in a topic within
+quantitative finance and it fetches research papers and news about it. You can
+then ask questions against those papers — a RAG system retrieves the relevant
+chunks and answers using them as context. The scale, at least immediately, is
+tiny: around 5 users a day. But thinking about what would happen if it
+attracted real traffic gave me an interesting exercise, so this series is
+exactly that, deliberately over-engineering my own app, one bottleneck at a
+time.
+
+## What actually breaks first
+
+I started by scoping what the application solves for users, aka the
+non-functional requirements. People come here to gain insight quickly, so reads
+dominate writes. My first reflex was the classic one: slap on a cache, add
+read replicas behind primary/replica replication — until I did the
+back-of-the-envelope math. Even at 5,000 users making 10 queries a day, that is
+roughly 0.6 requests per second. A single Postgres instance holding a small
+metadata table would not even notice.
+
+The resources that saturate first are different: the Claude API calls (token
+cost), the vector search and embedding work, and the external paper-ingestion
+API with its rate limits. Those are the interesting problems. The database gets
+its turn later, mostly as an exercise.
+
+## The data model, and my first wrong schema
+
+My first schema was one table: `user_id`, `topic`, `research_paper_link`,
+`ingestion_time`. It broke the moment I thought about deduplication. I check
+whether a paper already exists before calling the ingestion API (both to avoid
+re-paying that cost and to avoid being throttled) but if papers live inside
+per-user rows, "does anyone already have this paper?" is a question the schema
+can't answer cheaply, and the same PDF gets stored once per user who wants it.
+
+So papers become their own entity: a `papers` table keyed by a hash of the
+URL/DOI, deduplicated globally, holding the object-storage link and chunking
+status. A `user_papers` join table maps who ingested what, with the user's
+topic label. Dedup is now a single lookup, storage holds one copy of each
+paper, and chunks belong to documents rather than to users.
+
+## Storage lifecycle, where reads turn into writes
+
+Papers sit in object storage for 90 days and move to an archive if they are
+not accessed. Which means I need to know when a paper was last accessed. My
+original index on `ingestion_time` finds papers that are old, not papers that
+are unused. So `user_papers` carries a `last_accessed_at`, indexed for the
+eviction job.
+
+The funny thing is that with that update, now tracking access time means every read performs
+a small write, in the app I just described as read-dominated. Batching those
+updates keeps that honest and cheap.
+
+## Retrieval
+
+Documents are vectorized with section-aware chunking, and chunks carry
+metadata: the document they came from and the topic they relate to. A user's
+retrieval is restricted to the documents they ingested — a metadata filter
+over their document IDs from `user_papers` so nobody picks up chunks from
+papers outside their own library. Retrieval uses MMR to keep the selected
+chunks relevant but not redundant, and those chunks go to the LLM as context.
+
+## The ingestion pipeline
+
+Ingestion is where the external throttling risk lives, so requests do not hit
+the ingestion API directly. They go onto a task queue where I use Celery
+workers in the real app, and a task queue is the right fit here; Kafka would be
+the answer if I needed a durable event log, which I do not. The API returns
+immediately and the client polls a status (or gets notified) while the worker
+does the fetch, chunking, and embedding in the background. The queue smooths
+bursts, retries failures, and keeps a slow ingestion from blocking a request
+thread.
+
+Rate limiting happens at two levels, because they solve different problems.
+Per-user limits stop one user from hogging the pipeline. But per-user limits do
+not protect the external API — enough polite users still add up to a throttle
+so a global token bucket caps our aggregate call rate against it, and the queue
+absorbs whatever exceeds it.
+
+## Token cost
+
+The other external dependency is the Claude API, priced per token. Two levers:
+
+**Prompt caching.** If I were self-hosting a model I would be managing KV-cache
+reuse myself; against a hosted API, prompt caching is the version of that you
+actually get. The stable prefix — system prompt, instructions, tool
+definitions — is marked with `cache_control`, so repeat requests read it from
+cache at a fraction of the input price. The catch for a RAG app: retrieved
+chunks differ per query, so the dynamic context does not cache. Only what sits
+before it does, which is a real argument for keeping the stable parts of the
+prompt long-lived and the per-query parts at the end.
+
+**Semantic caching.** Comparing a new query against previously answered ones
+and reusing the answer when they are semantically close can remove a call
+entirely. But it must be scoped per user: my retrieval is limited to each
+user's own documents, so serving user B a cached answer grounded in user A's
+papers would be both wrong and a data leak. Same-user repeat questions are
+where this cache earns its keep.
+
+## When user numbers actually trend up
+
+More traffic means horizontally scaling the API servers behind a load
+balancer. Instead of sticky sessions, session state lives in a small Redis
+cache (or just signed JWTs), so any server can take any request and the
+application stays stateless.
+
+If the `user_papers` table ever outgrows one node, it shards cleanly: hash the
+`user_id`, and use consistent hashing so provisioning a new shard moves a
+minimal slice of keys instead of rehashing everything. The `papers` table
+shards independently by its own key hash.
+
+The vector database was the part that resisted. My first idea was sharding by
+topic — use the metadata to decide which vector DB a document's chunks land
+in. It falls apart on skew: hot topics make hot shards, and one paper can span
+topics. The fix falls out of the earlier schema decision: chunks belong to
+documents, so shard by document. A user's query fans out only to the shards
+holding their documents, which the `user_papers` table already knows.
+
+Cold data gets the same treatment as papers: chunks unused for a week are
+evicted from the vector DB, and the document is re-activated on the next
+request — a delay for the first user who asks. Writing the chunks and
+embeddings to object storage on eviction makes re-activation a load instead of
+a full re-chunk and re-embed.
+
+## What this exercise was worth
+
+None of this is deployed for my 5 users a day which is the point of the
+title. But writing it down forced three real fixes that started as mistakes in
+this very draft: papers as a first-class entity, access-time tracking that my
+original index could not support, and a semantic cache that would have leaked
+answers across users. Over-engineering on paper is cheap; the bugs it catches
+are real.
+
+Part 2 will pick up the news side of the platform and the part I care most
+about professionally: how you would measure any of this like retrieval quality
+evals before scaling arguments.
