@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" font-family="ui-monospace, Menlo, monospace">
+  <rect width="800" height="200" fill="#0b0e14"/>
+  <text x="40" y="38" fill="#e8e4da" font-size="15" font-weight="600">one Recommender interface, two very different engines</text>
+
+  <!-- interface box -->
+  <g font-size="12">
+    <rect x="40" y="86" width="150" height="46" rx="4" fill="none" stroke="#2a2f3a"/>
+    <text x="115" y="108" fill="#e8e4da" text-anchor="middle">Recommender</text>
+    <text x="115" y="124" fill="#8f95a0" text-anchor="middle" font-size="10">score() · rank()</text>
+  </g>
+
+  <!-- two engines -->
+  <g font-size="11.5">
+    <rect x="360" y="62" width="400" height="40" rx="4" fill="none" stroke="#2a2f3a"/>
+    <text x="560" y="86" fill="#ffb454" text-anchor="middle">Excitement ranker &#8212; F1 &#183; NBA &#183; soccer</text>
+    <rect x="360" y="118" width="400" height="40" rx="4" fill="none" stroke="#2a2f3a"/>
+    <text x="560" y="142" fill="#e8e4da" text-anchor="middle">ContentRecommender &#8212; anime &#183; books &#183; music</text>
+  </g>
+
+  <!-- connectors -->
+  <g stroke="#8f95a0" stroke-width="1.5" fill="none">
+    <path d="M190 100 C 275 100, 275 82, 356 82"/>
+    <path d="M190 118 C 275 118, 275 138, 356 138"/>
+  </g>
+  <g fill="#8f95a0">
+    <path d="M356 82 l-6 -3.5 v7 z"/>
+    <path d="M356 138 l-6 -3.5 v7 z"/>
+  </g>
+
+  <text x="40" y="184" fill="#8f95a0" font-size="12">same problem shape: score an item's worth-your-time-ness, then rank a candidate set</text>
+</svg>

@@ -1,0 +1,46 @@
+---
+title: "Worth Watching?"
+summary: "A spoiler-free recommender that ranks what's actually worth your time across F1, NBA, and anime — behind one Recommender interface. A temporal eval proved pre-game excitement is near-unpredictable, so it ranks honestly instead of faking a predictor."
+tech: ["Python", "FastAPI", "learning-to-rank", "recommender-systems"]
+year: 2026
+featured: true
+order: 1
+metric: "one interface, 4 domains"
+repo: "https://github.com/Anikesh-99/worth-watching"
+demo: "https://anikesh-99.github.io/worth-watching/"
+---
+
+Of everything you *could* watch tonight, what's actually worth your time?
+Worth Watching answers that spoiler-free, across live sport (F1, NBA) and anime,
+and it's built around a single observation: a sports match, an unwatched anime,
+and an unread book are the same problem shape.
+
+## One Recommender interface, two very different engines
+
+Behind one `Recommender` interface sit two engines: a sports **excitement**
+ranker (F1 + NBA + soccer) and a **content-based** media ranker (anime, books,
+music, sharing one `ContentRecommender`). Both answer the same question — score
+an item's personalized worth-your-time-ness, then rank a candidate set — which
+is what makes this a platform rather than a pile of scripts.
+
+![architecture](/projects/worth-watching-arch.svg)
+
+## An honest negative result
+
+For events that haven't happened yet there's no box score, so excitement has to
+be *predicted* from pre-game features. I built that predictor and evaluated it
+with a temporal split — a test proves there's no lookahead — and the result was
+a clean negative: pre-game signals barely predict realized excitement (NBA
+Spearman ≈ 0.02). Sports drama is high-variance and largely unforeseeable.
+
+So the **Upcoming** view doesn't fake a thriller-predictor. It ranks by a
+transparent watchability index (stakes + matchup pedigree + competitiveness) ×
+personalization, and the learned predictor stays in the repo as the documented
+artifact of the finding.
+
+![the live demo — ranked, spoiler-free](/projects/worth-watching-demo.jpg)
+
+The live demo is a static build: the Python pipeline's scores are precomputed
+to JSON and the browser only filters and ranks, so it runs on the cold-start
+taste prior with no personal ratings shipped. Run the FastAPI app locally for
+the full, ratings-calibrated experience.

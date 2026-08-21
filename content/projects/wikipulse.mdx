@@ -1,0 +1,40 @@
+---
+title: "WikiPulse"
+summary: "A real-time streaming pipeline that watches Wikipedia's live edit firehose and flags statistical spikes — often the first sign of breaking news. Built to demonstrate the parts of streaming that actually bite: windowing, watermarks, late events, and idempotent sinks."
+tech: ["Python", "Kafka", "Quix Streams", "DuckDB", "Streamlit"]
+year: 2026
+featured: true
+order: 2
+metric: "mean + k·σ"
+repo: "https://github.com/Anikesh-99/wikipulse"
+---
+
+WikiPulse watches Wikipedia's live edit firehose and flags **spikes** — a wiki
+suddenly being edited far more than usual, often the first sign of breaking news
+— then serves it on a live dashboard. It's a weekend-sized project with a
+deliberate focus: the parts of streaming that actually bite in production, not
+clever ML.
+
+## The pipeline
+
+![pipeline](/projects/wikipulse-arch.svg)
+
+Wikipedia's EventStreams (SSE, no auth) are produced to a Kafka topic keyed by
+wiki, processed with Quix Streams in tumbling 60-second windows, and written to
+DuckDB (or MotherDuck) through an idempotent sink. A Streamlit dashboard reads
+the edit-rate and spike tables live. Redpanda stands in for Kafka in dev — the
+*exact same client code* runs against Confluent Cloud, only `.env` changes.
+
+## Why the spike model is deliberately dumb
+
+The "model" is mean + k·σ over a rolling baseline, and that's a choice, not a
+shortcut. A plain fixed threshold would false-alarm constantly on wikis that
+are *always* busy (Wikidata); measuring deviation from each wiki's own baseline
+correctly treats sustained busyness as normal and only flags genuine
+departures.
+
+The interesting engineering was never the detector — it's windowing,
+watermark-based window close, handling late events, and making the sink
+idempotent (`INSERT OR REPLACE`) so a replay doesn't double-count. Those are the
+things a streaming job gets wrong in production, so those are the things the
+project is built to get right.
